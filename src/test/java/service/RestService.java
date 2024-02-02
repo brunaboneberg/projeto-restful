@@ -1,7 +1,6 @@
 package service;
 
 import com.google.gson.Gson;
-import dto.LoginDTO;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -25,11 +24,10 @@ public class RestService {
                 .extract().response();
     }
 
-    public static Response get(String PATH, String token) {
+    public static Response get(String PATH) {
         return RestAssured.given()
                 .baseUri(BASE_URL)
                 .basePath(PATH)
-                .header("Authorization", token)
                 .header("Content-Type", ContentType.JSON)
                 .when()
                 .get()
@@ -37,11 +35,10 @@ public class RestService {
                 .log().all()
                 .extract().response();
     }
-    public static Response getWithParams(String PATH, String token, Map<String, Object> params) {
+    public static Response getWithParams(String PATH, Map<String, Object> params) {
         return RestAssured.given()
                 .baseUri(BASE_URL)
                 .basePath(PATH)
-                .header("Authorization", token)
                 .header("Content-Type", ContentType.JSON)
                 .queryParams(params)
                 .when()
