@@ -10,15 +10,16 @@ import service.CreateService;
 import service.RestService;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static util.staticValue.PATH_BOOKING;
 
-public class CreateBooking {
+public class PostBooking {
 
     @Test
     @DisplayName("Cadastra uma reserva e valida os dados")
-    void createBookingSuccess() {
+    void postBookingSuccess() {
         BookingDTO bookingRequest = CreateService.CreateBooking();
 
-        Response response = RestService.post(bookingRequest, "/booking");
+        Response response = RestService.post(bookingRequest, PATH_BOOKING);
 
         assertEquals(HttpStatus.SC_OK, response.statusCode());
 
@@ -35,8 +36,8 @@ public class CreateBooking {
 
     @Test
     @DisplayName("Cadastra uma reserva sem body")
-    void createBookingNoBody() {
-        Response response = RestService.post(null, "/booking");
+    void postBookingNoBody() {
+        Response response = RestService.post(null, PATH_BOOKING);
         assertEquals(HttpStatus.SC_BAD_REQUEST, response.statusCode());
     }
 

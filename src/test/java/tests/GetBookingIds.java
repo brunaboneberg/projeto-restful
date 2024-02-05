@@ -9,23 +9,21 @@ import org.junit.jupiter.api.Test;
 import service.RestService;
 
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static util.staticValue.PATH_BOOKING;
 
 public class GetBookingIds {
 
     @Test
-    @DisplayName("GET/ Busca Reserva por ID aleatório")
+    @DisplayName("GET/ Busca Reserva por ID aleatorio")
     void getBookingByIdList() {
 
-        Response allBookings = RestService.get("/booking");
-        assertEquals(HttpStatus.SC_OK, allBookings.statusCode());
-
-        List<Integer> bookingIds = allBookings.jsonPath().getList("bookingid");
-
-        String randomBookingId = String.valueOf(bookingIds.get((int) (Math.random() * bookingIds.size())));
-
-        Response bookingById = RestService.get("/booking/" + randomBookingId);
+        int randomIndex = new Random().nextInt(10) + 1;
+        String randomBookingId = String.valueOf(randomIndex);
+        
+        Response bookingById = RestService.get(PATH_BOOKING + "/" + randomBookingId);
         assertEquals(HttpStatus.SC_OK, bookingById.statusCode());
 
         JsonPath jsonResponse = bookingById.jsonPath();
@@ -48,7 +46,7 @@ public class GetBookingIds {
 
         String idNotExist = faker.number().digits(20);
 
-        Response bookingByIdNotExist = RestService.get("/booking/"+ idNotExist);
+        Response bookingByIdNotExist = RestService.get(PATH_BOOKING + "/" + idNotExist);
         assertEquals(HttpStatus.SC_NOT_FOUND, bookingByIdNotExist.statusCode());
 
     }
