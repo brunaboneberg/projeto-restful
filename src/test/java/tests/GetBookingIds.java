@@ -4,7 +4,6 @@ import com.github.javafaker.Faker;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import service.RestService;
@@ -14,7 +13,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GetBookingIds {
-
 
     @Test
     @DisplayName("GET/ Busca Reserva por ID aleatório")
@@ -32,14 +30,13 @@ public class GetBookingIds {
 
         JsonPath jsonResponse = bookingById.jsonPath();
 
-        assertNotNull(jsonResponse.getInt("bookingid"));
-        assertNotNull(jsonResponse.getString("booking.firstname"));
-        assertNotNull(jsonResponse.getString("booking.lastname"));
-        assertNotNull(jsonResponse.getInt("booking.totalprice"));
-        assertNotNull(jsonResponse.getBoolean("booking.depositpaid"));
-        assertNotNull(jsonResponse.getString("booking.bookingdates.checkin"));
-        assertNotNull(jsonResponse.getString("booking.bookingdates.checkout"));
-        assertNotNull(jsonResponse.getString("booking.additionalneeds"));
+        assertNotNull(jsonResponse.getString("firstname"));
+        assertNotNull(jsonResponse.getString("lastname"));
+        assertNotNull(jsonResponse.getInt("totalprice"));
+        assertNotNull(jsonResponse.getBoolean("depositpaid"));
+        assertNotNull(jsonResponse.getString("bookingdates.checkin"));
+        assertNotNull(jsonResponse.getString("bookingdates.checkout"));
+        assertNotNull(jsonResponse.getString("additionalneeds"));
 
     }
 
@@ -49,11 +46,10 @@ public class GetBookingIds {
 
         Faker faker = new Faker();
 
-        Integer idNotExist = faker.number().randomDigit();
+        String idNotExist = faker.number().digits(20);
 
         Response bookingByIdNotExist = RestService.get("/booking/"+ idNotExist);
         assertEquals(HttpStatus.SC_NOT_FOUND, bookingByIdNotExist.statusCode());
 
     }
-
 }

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CreateBooking {
 
     @Test
-    @DisplayName("Cadastrar Reserva")
+    @DisplayName("Cadastra uma reserva e valida os dados")
     void createBookingSuccess() {
         BookingDTO bookingRequest = CreateService.CreateBooking();
 
@@ -24,20 +24,20 @@ public class CreateBooking {
 
         JsonPath jsonResponse = response.jsonPath();
 
-        assertNotNull(jsonResponse.getInt("bookingid"));
-        assertNotNull(jsonResponse.getString("booking.firstname"));
-        assertNotNull(jsonResponse.getString("booking.lastname"));
-        assertNotNull(jsonResponse.getInt("booking.totalprice"));
-        assertNotNull(jsonResponse.getBoolean("booking.depositpaid"));
-        assertNotNull(jsonResponse.getString("booking.bookingdates.checkin"));
-        assertNotNull(jsonResponse.getString("booking.bookingdates.checkout"));
-        assertNotNull(jsonResponse.getString("booking.additionalneeds"));
+        assertEquals(bookingRequest.firstname(), jsonResponse.getString("booking.firstname"));
+        assertEquals(bookingRequest.lastname(), jsonResponse.getString("booking.lastname"));
+        assertEquals(bookingRequest.totalprice(), jsonResponse.getInt("booking.totalprice"));
+        assertEquals(bookingRequest.depositpaid(), jsonResponse.getBoolean("booking.depositpaid"));
+        assertEquals(bookingRequest.bookingdates().checkin(), jsonResponse.getString("booking.bookingdates.checkin"));
+        assertEquals(bookingRequest.bookingdates().checkout(), jsonResponse.getString("booking.bookingdates.checkout"));
+        assertEquals(bookingRequest.additionalneeds(), jsonResponse.getString("booking.additionalneeds"));
     }
 
     @Test
-    @DisplayName("Cadastrar uma Reserva sem Body")
+    @DisplayName("Cadastra uma reserva sem body")
     void createBookingNoBody() {
         Response response = RestService.post(null, "/booking");
         assertEquals(HttpStatus.SC_BAD_REQUEST, response.statusCode());
     }
+
 }
